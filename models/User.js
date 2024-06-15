@@ -31,33 +31,33 @@ const userSchema = new Schema({
         type:Boolean,
         default:false
     },
-    hasShippingAdress:{
+    hasShippingAddress:{
         type:Boolean,
         default:false
     },
     shippingAddress: {
         firstName:{
             type:String,
-            required:true
+            required:false
         },
         lastName:{
             type:String,
-            required:true
+            required:false
         },
         address:{
             type: String
         },
         city:{
             type:String,
-            required:true
+            required:false
         },
         country:{
             type:String,
-            required:true
+            required:false
         },
         phone:{
             type:String,
-            required:true
+            required:false
         }
     }
 },
