@@ -4,6 +4,8 @@ import dbConnect from '../config/dbConnect.js';
 import dotenv from "dotenv";
 import userRoutes from '../routes/usersroute.js';
 import { globalErrhandler,notFound } from '../middlewares/globalErrorHandler.js';
+import ProductRoutes from '../routes/productroute.js';
+
 
 dotenv.config();
 
@@ -23,6 +25,8 @@ app.use(express.json())
 
 //routes
 app.use('/', userRoutes)
+app.use('/', ProductRoutes)
+
 app.use(notFound)
 app.use(globalErrhandler)
 // Export the app
