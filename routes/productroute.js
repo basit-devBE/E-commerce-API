@@ -7,8 +7,7 @@ const ProductRoutes = express.Router();
 ProductRoutes.post("/api/v1/createproduct",isLoggedIn, createProductCtrl);
 ProductRoutes.get("/api/v1/allproduct", allProductCtrl);
 ProductRoutes.get("/api/v1/product/:id", SingleProduct);
-ProductRoutes.put("/api/v1/updateproduct", isLoggedIn, upProduct)
-ProductRoutes.delete("api/v1/deleteproduct", isLoggedIn, delProd)
-
+ProductRoutes.put("/api/v1/updateproduct/:id", isLoggedIn, upProduct)
+ProductRoutes.delete('/api/v1/products/:id', isLoggedIn, delProd);
 
 export default ProductRoutes;
