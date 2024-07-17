@@ -1,5 +1,5 @@
-import getTokenFromHeader from "../utils/getToken.js"
-import { verifyToken } from "../utils/verifytoken.js"
+import getTokenFromHeader from "../utils/getToken.js";
+import {verifyToken} from "../utils/verifytoken.js"
 
 export const isLoggedIn = (req,res,next) =>{
     const token = getTokenFromHeader(req);

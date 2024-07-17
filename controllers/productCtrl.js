@@ -1,27 +1,36 @@
 import expressAsyncHandler from 'express-async-handler';
 import Product from '../models/Product.js';
 import mongoose        from 'mongoose';
+import Category from '../models/Categorymodel.js';
 export const createProductCtrl = expressAsyncHandler(async (req, res) => {
   const {
     name, description, category, sizes, colors, user, price, totalQty,brand
   } = req.body;
+
   const productExists = await Product.findOne({ name });
   if (productExists) {
     return res.status(400).json({
       msg: 'Product already exists',
     });
   }
+  const categoryFound = await Category.findOne({name:category});
+  if(!categoryFound){
+    throw new Error("Category not found or check name of the category")
+  }
+
   const product = await Product.create({
     name,
     description, 
     category, 
     sizes,
     colors,
-    user : req.userAuthId,
+    user:req.userAuthId,
     price, 
     totalQty,
     brand,
   });
+  categoryFound.products.push(product._id)
+  await categoryFound.save()
   return res.status(201).json(product);
 });
 

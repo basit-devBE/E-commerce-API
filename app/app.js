@@ -5,6 +5,7 @@ import dotenv from "dotenv";
 import userRoutes from '../routes/usersroute.js';
 import { globalErrhandler,notFound } from '../middlewares/globalErrorHandler.js';
 import ProductRoutes from '../routes/productroute.js';
+import CategoryRouter from '../routes/categoryrouter.js';
 
 
 dotenv.config();
@@ -26,6 +27,7 @@ app.use(express.json())
 //routes
 app.use('/', userRoutes)
 app.use('/', ProductRoutes)
+app.use('/', CategoryRouter)
 
 app.use(notFound)
 app.use(globalErrhandler)

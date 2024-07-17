@@ -65,12 +65,20 @@ export const LoginUserCtrl = asyncHandler(async (req, res) => {
     }
 });
 
-export const getUserProfileCtrl = asyncHandler(async(req,res) =>{
-    const token = getTokenFromHeader(req)
+export const getUserProfileCtrl = asyncHandler(async (req, res) => {
+    const token = getTokenFromHeader(req);
     const verified = verifyToken(token);
-    console.log(verified)
-    res.json({
-        msg : 'user profile'
-})
+    console.log(verified);
 
+    if (verified) {
+        res.status(200).json({ message: "verified" });
+    } else {
+        res.status(404).json({ message: "verification failed" });
+    }
+});
+
+
+export const getallusers = asyncHandler(async(req,res)=>{
+    const users = await User.find()
+    res.json(users)
 })
