@@ -1,10 +1,11 @@
-export const getTokenFromHeader = (req, res) =>{
+const getTokenFromHeader = (req) => {
+    //get token from header
     const token = req?.headers?.authorization?.split(" ")[1];
-    if (!token){
-       return "No token found"
-    }else{
-        return token;
+    if (token === undefined) {
+      return "No token found in the header";
+    } else {
+      return token;
     }
-}
+  };
 
-export default getTokenFromHeader;
+export default getTokenFromHeader

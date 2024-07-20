@@ -6,6 +6,8 @@ import userRoutes from '../routes/usersroute.js';
 import { globalErrhandler,notFound } from '../middlewares/globalErrorHandler.js';
 import ProductRoutes from '../routes/productroute.js';
 import CategoryRouter from '../routes/categoryrouter.js';
+import BrandRouter from '../routes/brandroutes.js';
+import ColourRouter from '../routes/coloroute.js';
 
 
 dotenv.config();
@@ -28,6 +30,8 @@ app.use(express.json())
 app.use('/', userRoutes)
 app.use('/', ProductRoutes)
 app.use('/', CategoryRouter)
+app.use('/', BrandRouter)
+app.use('/', ColourRouter)
 
 app.use(notFound)
 app.use(globalErrhandler)

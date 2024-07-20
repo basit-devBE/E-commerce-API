@@ -1,9 +1,8 @@
 import Category from "../models/Categorymodel.js";
 import expressAsyncHandler from "express-async-handler";
-import Product from "../models/Product.js";
 
 export const createCategoryCtrl = expressAsyncHandler(async (req, res) => {
-    const { name } = req.body;
+    const { name }= req.body;
 
     try {
         const categoryFound = await Category.findOne({ name });
@@ -13,7 +12,10 @@ export const createCategoryCtrl = expressAsyncHandler(async (req, res) => {
             });
         }
 
-        const category = await Category.create({ name });
+        const category = await Category.create({ 
+            name: name.toLowerCase(),
+            user: req.userAuthId()
+         });
         res.status(201).json({
             msg: "Category created successfully",
             category,
