@@ -1,7 +1,8 @@
 import expressAsyncHandler from 'express-async-handler';
 import Product from '../models/Product.js';
-import mongoose        from 'mongoose';
 import Category from '../models/Categorymodel.js';
+import Brand from '../models/brand.js';
+import Color from '../models/colors.js';
 export const createProductCtrl = expressAsyncHandler(async (req, res) => {
   const {
     name, description, category, sizes, colors, user, price, totalQty,brand
@@ -18,6 +19,14 @@ export const createProductCtrl = expressAsyncHandler(async (req, res) => {
     throw new Error("Category not found or check name of the category")
   }
 
+  const BrandFound = await Brand.findOne({name: brand.toLowerCase()});
+  if(!BrandFound){
+    throw new Error("Brand not found or check name of the brand");
+  }
+  const ColorFound = await Color.findOne({name: colors.toLowerCase()})
+  if(!ColorFound){
+    throw new Error("No exiting Color like this. Check the color name of your product")
+  }
   const product = await Product.create({
     name,
     description, 
@@ -31,8 +40,13 @@ export const createProductCtrl = expressAsyncHandler(async (req, res) => {
   });
   categoryFound.products.push(product._id)
   await categoryFound.save()
+  BrandFound.products.push(product._id)
+  await BrandFound.save()
+  ColorFound.products.push(product._id);
+  await ColorFound.save()
   return res.status(201).json(product);
 });
+ 
 
 
 // a controller to fetch all products that exist

@@ -8,6 +8,7 @@ import ProductRoutes from '../routes/productroute.js';
 import CategoryRouter from '../routes/categoryrouter.js';
 import BrandRouter from '../routes/brandroutes.js';
 import ColourRouter from '../routes/coloroute.js';
+import Reviewroute from '../routes/reviewroute.js';
 
 
 dotenv.config();
@@ -32,6 +33,7 @@ app.use('/', ProductRoutes)
 app.use('/', CategoryRouter)
 app.use('/', BrandRouter)
 app.use('/', ColourRouter)
+app.use('/', Reviewroute)
 
 app.use(notFound)
 app.use(globalErrhandler)

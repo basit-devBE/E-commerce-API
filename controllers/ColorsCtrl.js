@@ -89,7 +89,7 @@ export const UpdateColor = expressAsyncHandler(async (req, res) => {
 });
 
 
-export const DeletColor = expressAsyncHandler(async (req, res)=>{
+export const DeleteColor = expressAsyncHandler(async (req, res)=>{
    const color = await Color.findByIdAndDelete(req.params.id);
    if(!color){
     throw new Error('Color not found')}
