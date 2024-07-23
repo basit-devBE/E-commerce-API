@@ -114,7 +114,7 @@ export const allProductCtrl = expressAsyncHandler(async (req, res) => {
   }
 
   productQuery =productQuery.skip(startIndex).limit(limit)
-  const products = await productQuery;
+  const products = await productQuery.populate('reviews');
 
   res.json({
     status: "success",
@@ -130,7 +130,7 @@ export const allProductCtrl = expressAsyncHandler(async (req, res) => {
 // a controller to fetch a single product
 export const SingleProduct = expressAsyncHandler(async (req,res) =>
 {
-  const product = await Product.findById(req.params.id);
+  const product = await Product.findById(req.params.id).populate('reviews');
   if (!product){
     throw new Error('Product not found')
   }
