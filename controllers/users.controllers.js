@@ -56,6 +56,7 @@ export const LoginUserCtrl = asyncHandler(async (req, res) => {
     if (isPasswordCorrect) {
         return res.status(200).json({
             msg: 'User logged in successfully',
+            data: userFound,
         token : generateToken(userFound.id)
         });
     } else {
