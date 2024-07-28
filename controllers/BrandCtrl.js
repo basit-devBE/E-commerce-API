@@ -5,8 +5,7 @@ export const createBrandCtrl = expressAsyncHandler(async(req,res)=>{
     const {name} = req.body;
 
     try{
-        const Brandfound = await Brand.findOne({ name });
-        if (Brandfound){
+        const Brandfound = await Brand.findOne({ name: { $regex: new RegExp(`^${name}$`, 'i') } });        if (Brandfound){
             return res.status(400).json({
                 msg: "Brand already exists",
             });

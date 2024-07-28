@@ -2,14 +2,23 @@ import Order from "../models/order.js";
 import expressAsyncHandler from "express-async-handler";
 import User from "../models/User.js";
 import Product from "../models/Product.js";
+import Stripe from "stripe";
+import dotenv from "dotenv";
+dotenv.config();
 
+const stripe = new Stripe(process.env.stripe_key)
 export const createOrderCtrl = expressAsyncHandler(async (req, res) => {
+    const {orderItems,shippingAddress,totalPrice} = req.body
     const user = await User.findById(req.userAuthId);
     if (!user) {
         res.status(404);
         throw new Error("User not found");
+    } 
+    if(!user?.hasShippingAddress){
+        res.status(400);
+        throw new Error("User has no shipping address")
     }
-   const {orderItems,shippingAddress,totalPrice} = req.body
+
    if(orderItems?.length <=0 ){
          res.status(400);
          throw new Error("No order items")
@@ -34,15 +43,36 @@ export const createOrderCtrl = expressAsyncHandler(async (req, res) => {
             res.status(400);
             throw new Error("Product out of stock")
         }
-        console.log(product)
         product.totalQty -= item.totalQtyBuying
+        product.totalSold += item.totalQtyBuying
         await product.save()
     }
-    return res.json({
-        status: 200,
-        message: "Order created successfully",
-        data: order
+    const convertedItems = orderItems.map((items)=>{
+        return{
+            price_data:{
+                currency: "usd",
+                product_data:{
+                    name: items?.name,
+                    description: items?.description,
+                },
+                unit_amount: items?.price * 100
+            },
+            quantity: items?.totalQtyBuying
+            }
     })
+
+    const session = await stripe.checkout.sessions.create({
+        line_items: convertedItems,    
+        mode : 'payment',
+        success_url: 'http://localhost:3000/success',
+        cancel_url :'http://localhost:3000/cancel'  
+    });
+    res.send({url: session.url})
+    // return res.json({
+    //     status: 200,
+    //     message: "Order created successfully",
+    //     data: order
+    // })
     
     
   

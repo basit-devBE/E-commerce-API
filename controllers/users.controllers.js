@@ -5,6 +5,7 @@ import asyncHandler from "express-async-handler";
 import  getTokenFromHeader  from "../utils/getToken.js";
 import  generateToken  from "../utils/generateToken.js";
 import { verifyToken } from "../utils/verifytoken.js";
+import expressAsyncHandler from "express-async-handler";
 
 //@desc register user
 //@route POST/api/v1/users/register
@@ -83,3 +84,28 @@ export const getallusers = asyncHandler(async(req,res)=>{
     const users = await User.find()
     res.json(users)
 })
+
+export const updateShippingAddress = expressAsyncHandler(async(req,res) =>{
+    const {firstName,
+        lastName,
+        address,
+        city,
+        country,
+        phone} = req.body
+        const user = await User.findByIdAndUpdate(req.userAuthId, {
+            shippingAddress: {
+                firstName,
+                lastName,
+                address,
+                city,
+                country,
+                phone
+            },
+            hasShippingAddress: true 
+        },
+        {new:true}
+        );
+        res.json({
+            status: 200,
+            message: "Shipping address updated successfully",})
+    })

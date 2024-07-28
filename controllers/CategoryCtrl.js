@@ -5,7 +5,7 @@ export const createCategoryCtrl = expressAsyncHandler(async (req, res) => {
     const { name }= req.body;
 
     try {
-        const categoryFound = await Category.findOne({ name });
+        const categoryFound = await Category.findOne({ name: { $regex: new RegExp(`^${name}$`, 'i') } });
         if (categoryFound) {
             return res.status(400).json({
                 msg: "Category already exists",
@@ -14,7 +14,7 @@ export const createCategoryCtrl = expressAsyncHandler(async (req, res) => {
 
         const category = await Category.create({ 
             name: name.toLowerCase(),
-            user: req.userAuthId()
+            user: req.userAuthId
          });
         res.status(201).json({
             msg: "Category created successfully",
